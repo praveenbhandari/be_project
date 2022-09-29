@@ -52,6 +52,7 @@
 var web3 = new Web3(window.ethereum);
 // var Contract = require('web3-eth-contract');
 var acc = null;
+// var key
 
 var contract_addr = ""
 
@@ -123,15 +124,28 @@ function call_contract(contract_addrr) {
     console.log("aaabc : " + AgentContract.methods.getBalance());
 
     TODO://ask for payment metamask ka
-    // AgentContract.methods.getBalance(function (error, results) {
-    //     if (!error) {
-    //         console.log(results);
-    //     }
 
-    // });
-    console.log(AgentContract.methods.sendmoney(110).call({ from: '0xBea3DbCC78b63Be254d9877CA75092C5a26c0097' }, function (error, results) {
-        console.log("ress hehe : " + results);
-    }));
+    // acc = web3.eth.selectedAddress;
+    console.log("aaaaa " + acc);
+    // acc = acc.toLocaleLowerCase();
+    AgentContract.methods.getBalance().call(acc, { gas: 1000000 }, function (error, results) {
+        if (!error) {
+            console.log(results);
+        }
+    })
+    console.log("hmm : " + AgentContract.methods.sendmoney(1121) + "  :: " + acc)
+    // console.log(AgentContract.methods.sendmoney(110).call({ from: '0xBea3DbCC78b63Be254d9877CA75092C5a26c0097' }, function (error, results) {
+    //     console.log("ress hehe : " + results);
+    // }));
+    AgentContract.methods.sendmoney(110).send({ from: acc }).on("confirmation", function (cnfno, receipt) {
+        console.log("cnf : " + cnfno); console.log("receipt : " + receipt);
+    }).on('receipt', function (receipt) {
+        // receipt example
+        console.log(receipt);
 
+    })
     return web3.currentProvider.selectedAddress;
 }
+
+
+// TODO:infura/quicknode
